@@ -13,7 +13,7 @@ connectToMongo();
 const app = express()
 const port = 3000
 
-// middleware
+// middleware to parse json data
 app.use(express.json())
 
 app.use('/api/auth', require('./routes/auth'))
