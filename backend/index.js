@@ -6,15 +6,15 @@
  * @throws {Error} If connection to MongoDB fails
  */
 const connectToMongo = require('./db');
-const express = require('express')
+const express = require('express');
 
+// Connect to MongoDB
 connectToMongo();
 
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
 
-// middleware to parse json data
-app.use(express.json())
+app.use(express.json());
 
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/notes', require('./routes/notes'))
