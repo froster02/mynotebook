@@ -9,10 +9,34 @@ const mongoose = require('mongoose');
  * @property {Date} date - The date when the user was created (defaults to current timestamp)
  */
 const UserSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    date: { type: Date, default: Date.now }
+    name: {
+        type: String,
+        required: [true, 'Name is required'],
+        trim: true,
+        minlength: [3, 'Name must be at least 3 characters']
+    },
+    email: {
+        type: String,
+        required: [true, 'Email is required'],
+        unique: true,
+        trim: true,
+        lowercase: true,
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email']
+    },
+    password: {
+        type: String,
+        required: [true, 'Password is required'],
+        minlength: [5, 'Password must be at least 5 characters']
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    }
+}, {
+    timestamps: true
 });
+
+// Create index on email field for faster queries
+UserSchema.index({ email: 1 });
 
 module.exports = mongoose.model('user', UserSchema);
