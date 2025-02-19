@@ -1,4 +1,11 @@
 /**
+ * @file index.js
+ * @description Entry point for the MyNotebook application
+ * @requires express
+ * @requires ./db
+ */
+
+/**
  * Function to establish connection with MongoDB database
  * @function connectToMongo
  * @requires './db'
@@ -8,17 +15,24 @@
 const connectToMongo = require('./db');
 const express = require('express');
 
-// Connect to MongoDB
+// Initialize MongoDB connection
 connectToMongo();
 
+/**
+ * Express application instance
+ * @constant {express.Application}
+ */
 const app = express();
-const port = 3000;
+const port = 5000;
 
+// Middleware
 app.use(express.json());
 
-app.use('/api/auth', require('./routes/auth'))
-app.use('/api/notes', require('./routes/notes'))
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/notes', require('./routes/notes'));
 
+// Start server
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+    console.log(`Server running on port ${port}`);
+});

@@ -1,16 +1,19 @@
 /**
- * Express module
- * @const
- * @module express
- * @description Express.js web application framework for Node.js
+ * @module routes/auth
  * @requires express
+ * @requires express-validator
+ * @requires ../models/User
  */
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const User = require('../models/User');
 
-// Create a user using: POST "/api/auth/"
+/**
+ * @route POST /api/auth
+ * @description Register a new user
+ * @access Public
+ */
 router.post('/', [
     check('name')
         .trim()
