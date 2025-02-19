@@ -23,7 +23,7 @@ connectToMongo();
  * @constant {express.Application}
  */
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
@@ -32,7 +32,21 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/notes', require('./routes/notes'));
 
-// Start server
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+// Start server with error handling
+const startServer = async () => {
+    try {
+        await app.listen(port);
+        console.log(`Server running on port ${port}`);
+    } catch (error) {
+        if (error.code === 'EADDRINUSE') {
+            console.log(`Port ${port} is busy, trying ${port + 1}`);
+            await app.listen(port + 1);
+            console.log(`Server running on port ${port + 1}`);
+        } else {
+            console.error('Failed to start server:', error);
+            process.exit(1);
+        }
+    }
+};
+
+startServer();
