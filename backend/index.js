@@ -23,7 +23,7 @@ connectToMongo();
  * @constant {express.Application}
  */
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5010;
 
 // Middleware
 app.use(express.json());
