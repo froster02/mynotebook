@@ -8,6 +8,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 /**
  * @route POST /api/auth
@@ -52,11 +53,12 @@ router.post('/', [
             });
         }
 
-        // Create new user
+        const salt = bcrypt.getSalt(10);
+        const secPass = await bcrypt.hash(req.body.password, salt);
         const user = await User.create({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: secPass
         });
 
         console.log('User created successfully:', {
