@@ -53,7 +53,7 @@ router.post('/', [
             });
         }
 
-        const salt = bcrypt.getSalt(10);
+        const salt = await bcrypt.genSalt(10);
         const secPass = await bcrypt.hash(req.body.password, salt);
         const user = await User.create({
             name: req.body.name,
@@ -64,7 +64,8 @@ router.post('/', [
         console.log('User created successfully:', {
             id: user._id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            password: user.password
         });
 
         res.status(201).json({
