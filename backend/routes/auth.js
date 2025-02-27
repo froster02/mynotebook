@@ -9,6 +9,7 @@ const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const JWT_SECRET = 'mynotebook';
 
 /**
  * @route POST /api/auth
