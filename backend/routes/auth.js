@@ -10,6 +10,7 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const JWT_SECRET = 'mynotebook';
+var jwt = require('jsonwebtoken');
 
 /**
  * @route POST /api/auth
@@ -61,6 +62,14 @@ router.post('/', [
             email: req.body.email,
             password: secPass
         });
+
+        const data = {
+            user: {
+                id: user._id
+            }
+        }
+        const jwtData = jwt.sign(data, JWT_SECRET);
+        console.log('Token:', jwtData);
 
         console.log('User created successfully:', {
             id: user._id,
