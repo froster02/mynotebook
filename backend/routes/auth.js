@@ -11,6 +11,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const JWT_SECRET = 'mynotebook';
 var jwt = require('jsonwebtoken');
+var fetchuser = require('../middleware/fetchuser');
 
 /**
  * @route POST /api/auth
@@ -148,10 +149,7 @@ router.post('/createuser', [
 
 
 // Route 3: Get logged in user details using : POST /api/auth/getuser. Login required.
-router.post('/login', [
-    body('email', 'Enter a valid email').isEmail(),
-    body('password', 'Password cannot be blank').exists()
-], async (req, res) => {
+router.post('/login', fetchuser, async (req, res) => {
 
     try {
         const userId = "todo";
