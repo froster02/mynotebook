@@ -35,6 +35,7 @@ app.use('/api/notes', require('./routes/notes'));
 // Start server with error handling
 const startServer = async () => {
     try {
+        await connectToMongo(); // Ensure MongoDB connection is established
         await app.listen(port);
         console.log(`Server running on port ${port}`);
     } catch (error) {
