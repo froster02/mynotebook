@@ -5,7 +5,7 @@
  * @requires ../models/User
  */
 const express = require('express');
-const { check, validationResult } = require('express-validator');
+const { body, check, validationResult } = require('express-validator');
 const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
@@ -17,6 +17,8 @@ var jwt = require('jsonwebtoken');
  * @description Register a new user
  * @access Public
  */
+
+// Route 1: Register a user using : POST /api/auth. No Login page is required.
 router.post('/', [
     check('name')
         .trim()
@@ -71,20 +73,18 @@ router.post('/', [
         const jwtData = jwt.sign(data, JWT_SECRET);
         console.log('Token:', jwtData);
 
+        // Send back the generated token instead of user details
+        res.status(201).json({
+            success: true,
+            token: jwtData
+        });
+
         console.log('User created successfully:', {
             id: user._id,
             name: user.name,
             email: user.email,
-            password: user.password
-        });
-
-        res.status(201).json({
-            success: true,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email
-            }
+            password: user.password,
+            token: jwtData
         });
 
     } catch (error) {
@@ -106,6 +106,43 @@ router.post('/', [
             error: 'Internal Server Error',
             message: error.message
         });
+    }
+});
+
+//Route 2: Authenticate a user using : POST /api/auth/login. No Login page is required.
+router.post('/createuser', [
+    body('email', 'Enter a valid email').isEmail(),
+    body('password', 'Password cannot be blank').exists()
+], async (req, res) => {
+    // If there are errors, return Bad request and the errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+    try {
+        // Check if user exists
+        let user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "Try login using correct credentials" });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Try login using correct credentials" });
+        }
+
+        const payload = {
+            user: {
+                id: user.id
+            }
+        };
+        const authtoken = jwt.sign(payload, JWT_SECRET);
+        res.json({ authtoken });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
     }
 });
 
