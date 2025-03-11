@@ -60,6 +60,24 @@ router.post('/', [
 
         const salt = await bcrypt.genSalt(10);
         const secPass = await bcrypt.hash(req.body.password, salt);
+        /**
+         * Creates a new user in the database
+         * @async
+         * @param {Object} req.body - The request body containing user information
+         * @param {string} req.body.name - The name of the user
+         * @param {string} req.body.email - The email of the user
+         * @param {string} secPass - The hashed password of the user
+         * @returns {Promise<Object>} The created user object
+         * @throws {Error} If user creation fails
+         */
+        /**
+         * Creates a new user in the database with the provided name, email, and hashed password
+         * @param {Object} user - The user object to be created
+         * @param {string} user.name - The name of the user
+         * @param {string} user.email - The email address of the user
+         * @param {string} secPass - The hashed password for the user
+         * @returns {Promise<Object>} The created user object from the database
+         */
         const user = await User.create({
             name: req.body.name,
             email: req.body.email,
