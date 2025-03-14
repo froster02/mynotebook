@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+var fetchuser = require('../middleware/fetchuser');
+const Notes = require('../models/Notes');
+
 /**
  * @typedef {import('../models/Notes')} Notes
  * Represents the Notes model for managing note-related operations
@@ -11,16 +14,17 @@ const router = express.Router();
  * @description A model representing user notes within the application.
  * This module provides functionality for managing and interacting with note documents in the database.
  */
-const Notes = require('../models/Notes');
 
 /**
  * @route GET /api/notes
  * @description Get all notes for a user
  * @access Private
  */
-router.get('/', async (req, res) => {
+
+// Route 1 : Get all notes using GET request
+router.get('/fetchallnotes', fetchuser, async (req, res) => {
     try {
-        const notes = await Notes.find();
+        const notes = await Notes.find({ user: req.user.id });
         res.json(notes);
     } catch (error) {
         console.error(error);
