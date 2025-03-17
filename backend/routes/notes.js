@@ -1,17 +1,14 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 const router = express.Router();
 var fetchuser = require('../middleware/fetchuser');
 const Notes = require('../models/Notes');
 
-// Route 1 : Get all notes using GET request
+//Router 1 : Get all the notes using : GET "/api/notes/fetchallnotes". Login required
 router.get('/fetchallnotes', fetchuser, async (req, res) => {
-    try {
-        const notes = await Notes.find({ user: req.user.id });
-        res.json(notes);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-    }
+    const notes = await Notes.find({ user: req.user.id });
+    res.json(notes);
 });
 
 module.exports = router;
