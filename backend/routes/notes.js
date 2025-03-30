@@ -1,6 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 var fetchuser = require('../middleware/fetchuser');
