@@ -15,7 +15,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "both": "concurrently \"npm run start\" \"nodemon backend/index.js\""
+    "server": "nodemon backend/index.js",
+    "both": "concurrently \"npm run start\" \"npm run server\""
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +35,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "nodemonConfig": {
+    "watch": [
+      "backend"
+    ],
+    "ext": "js,json",
+    "ignore": [
+      "node_modules"
+    ],
+    "env": {
+      "NODE_ENV": "development"
+    }
   }
 }
