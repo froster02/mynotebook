@@ -1,6 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+/**
+ * A functional component that renders a navigation bar using Bootstrap classes.
+ * The navbar includes a brand logo, a collapsible hamburger menu for mobile views,
+ * navigation links for Home and About pages using React Router's Link component,
+ * and a search form with an input field and submit button.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <Navbar />
+ * )
+ */
 const Navbar = () => {
     return (
         <div>

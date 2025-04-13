@@ -29,6 +29,23 @@ router.post('/addnote', fetchuser, [
         }
         const { title, description, tag } = req.body;
         //Creating a new note
+        /**
+         * Creates a new Note instance with the specified properties.
+         * @param {Object} params - The note parameters
+         * @param {string} params.title - The title of the note
+         * @param {string} params.description - The description content of the note
+         * @param {string} params.tag - The tag associated with the note
+         * @param {string} params.user - The user ID who created the note (automatically set from req.user.id)
+         * @returns {Note} A new Note instance
+         */
+        /**
+         * Creates a new Note instance with the provided details
+         * @typedef {Object} Note
+         * @property {string} title - The title of the note
+         * @property {string} description - The content/description of the note
+         * @property {string} tag - The tag/category of the note
+         * @property {string} user - The ID of the user who created the note
+         */
         const note = new Note({
             title, description, tag, user: req.user.id
         });
