@@ -13,6 +13,14 @@ import NoteState from './context/notes/NoteState';
  * @component
  * @returns {JSX.Element} The rendered application with routing configuration
  */
+/**
+ * The root component of the application.
+ * Wraps the entire app with NoteState context provider that manages the global state for notes using Context API.
+ * Contains the main navigation bar and routes to different pages.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered App component with routing and layout structure
+ */
 function App() {
   return (
     <NoteState>
