@@ -1,6 +1,4 @@
 import NoteContext from "./notesContext";
-import { useState } from 'react';
-
 /**
  * NoteState component that provides a note context to its children using React Context API
  * @component
@@ -19,23 +17,17 @@ import { useState } from 'react';
  *   <ChildComponent />
  * </NoteState>
  */
+/**
+ * State management component for notes using Context API
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Child components that will have access to the note context
+ * @returns {JSX.Element} NoteContext.Provider component wrapping children
+ */
 const NoteState = (props) => {
-    const s1 = {
-        "name": "Arush",
-        "class": "5th"
-    };
 
-    const [state, setState] = useState(s1);
-    const update = () => {
-        setTimeout(() => {
-            setState({
-                "name": "Larry",
-                "class": "12th"
-            })
-        }, 1000);
-    }
     return (
-        <NoteContext.Provider value={{ state, update }}>
+        <NoteContext.Provider value={{}}>
             {props.children}
         </NoteContext.Provider>
     )
