@@ -1,4 +1,5 @@
 import NoteContext from "./notesContext";
+import { useState } from 'react';
 /**
  * NoteState component that provides a note context to its children using React Context API
  * @component
@@ -26,7 +27,7 @@ import NoteContext from "./notesContext";
  */
 const NoteState = (props) => {
 
-    const notes =
+    const notesInitial =
         [
             {
                 "_id": "67e979265139f37fde095803",
@@ -52,8 +53,10 @@ const NoteState = (props) => {
             }
         ];
 
+    const [notes, setNotes] = useState(notesInitial);
+
     return (
-        <NoteContext.Provider value={{ notes }}>
+        <NoteContext.Provider value={{ notes, setNotes }}>
             {props.children}
         </NoteContext.Provider>
     )
