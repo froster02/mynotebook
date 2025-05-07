@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import noteContext from '../context/notes/notesContext';
+import Noteitem from './Noteitem';
 /**
  * Notes component that displays a list of notes.
  * It uses the noteContext to access the notes data and setNotes function.
@@ -22,13 +23,13 @@ import noteContext from '../context/notes/notesContext';
  */
 const Notes = () => {
     const context = useContext(noteContext);
-    const { notes = [], setNotes } = context; // 
+    const { notes = [], setNotes } = context;
     return (
-        <div className='container my-3'>
+        <div className='row my-3'>
             <h1>Your Notes</h1>
             {
                 notes.map((note) => {
-                    return note.title;
+                    return note && <Noteitem key={note._id} note={note} />
                 })
             }
         </div>
