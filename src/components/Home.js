@@ -20,4 +20,3 @@ const Home = () => {
 }
 
 export default Home
-// This is the Home component that serves as the main page for adding and displaying notes.
