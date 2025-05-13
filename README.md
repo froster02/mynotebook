@@ -1,70 +1,173 @@
-# Getting Started with Create React App
+# MyNotebook
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+MyNotebook is a full-stack web application designed to help users efficiently create, organize, and manage their personal notes. The application includes features like note creation, editing, and deletion, and leverages modern web technologies for both the frontend and backend.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+### Frontend:
+- 📝 **Add Notes**: Users can add new notes by providing a title, description, and optional tag.
+- 📋 **View Notes**: Notes are displayed in a responsive grid layout.
+- ✏️ **Edit Notes**: Functionality to modify the content of an existing note.
+- ❌ **Delete Notes**: Users can remove notes they no longer need.
+- 🔍 **Search Bar**: A search bar is included in the navigation bar.
+- 🧭 **Navigation**: Provides seamless navigation between "Home" and "About" pages.
+- ⚠️ **Alert System**: Displays alert messages for user feedback.
+- 🌐 **Responsive UI**: The app is styled with Bootstrap for a modern and responsive design.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Backend:
+- **Authentication**:
+  - User registration, login, and authentication using JSON Web Tokens (JWT).
+  - Middleware (`fetchuser`) ensures secure access to user-specific routes.
+- **Notes Management**:
+  - Secure API routes for creating, reading, updating, and deleting notes.
+  - Notes are associated with individual users, ensuring data privacy.
+- **Database**:
+  - MongoDB is used as the database, with schemas for users and notes.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Frontend:
+- **React (via Create React App)**: For building the user interface.
+- **Bootstrap CSS**: For responsive and modern UI design.
+- **React Router**: For navigation between pages.
+- **React Context API**: For managing global state.
 
-### `npm run build`
+### Backend:
+- **Node.js**: For server-side logic.
+- **Express.js**: For handling RESTful API routes and middleware.
+- **MongoDB**: For database storage.
+- **Mongoose**: For object modeling and schema validation.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## React Hooks Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **`useState`**:
+   - Manages local state, such as the list of notes and their updates.
+   - Example: Used in `NoteState.js` to manage adding, editing, and deleting notes.
 
-### `npm run eject`
+2. **`useContext`**:
+   - Provides access to `noteContext`, enabling global state management.
+   - Example: Used in `Notes.js` to fetch and display the list of notes.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. **`useEffect`**:
+   - Tracks changes in the user's location path for dynamic page updates.
+   - Example: Used in `Navbar.js` to react to location changes.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## API Endpoints
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Authentication:
+- **POST** `/api/auth`: Register a new user.
+- **POST** `/api/auth/login`: Login and receive a JWT.
+- **GET** `/api/auth/getuser`: Get user details using the JWT.
 
-## Learn More
+### Notes:
+- **GET** `/api/notes/fetchallnotes`: Fetch all notes for the logged-in user.
+- **POST** `/api/notes/addnote`: Add a new note.
+- **PUT** `/api/notes/updatenote/:id`: Update an existing note.
+- **DELETE** `/api/notes/deletenote/:id`: Delete a note.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Backend Architecture
 
-### Code Splitting
+The backend is implemented using **Node.js** and **Express.js**, with **MongoDB** as the database. It is designed to provide a secure and efficient API for user authentication and note management.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Key Backend Components:
 
-### Analyzing the Bundle Size
+1. **Database Connection**:
+   - MongoDB is connected using Mongoose.
+   - Connection parameters are configured in the `db.js` file.
+   - The database URL is set as `mongodb://localhost:27017/mynotebook`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+2. **Authentication**:
+   - JWT is used for secure user authentication.
+   - Passwords are hashed using `bcryptjs`.
+   - Middleware (`fetchuser`) validates JWTs and ensures only authenticated users can access protected routes.
 
-### Making a Progressive Web App
+3. **Notes Management**:
+   - The `Notes` schema includes fields for the title, description, tag, and user association.
+   - CRUD operations are implemented in the `notes.js` route file, with proper error handling and validation.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+4. **Error Handling**:
+   - All routes include try-catch blocks to handle errors gracefully.
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Getting Started
 
-### Deployment
+### Prerequisites
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Node.js and npm installed on your machine.
+- MongoDB installed and running locally or in the cloud.
 
-### `npm run build` fails to minify
+### Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/froster02/mynotebook.git
+   cd mynotebook
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Configure the backend:
+   - Navigate to the `backend` folder.
+   - Create a `.env` file and add your MongoDB URI and JWT secret:
+     ```
+     MONGO_URI=mongodb://localhost:27017/mynotebook
+     JWT_SECRET=your_jwt_secret
+     ```
+
+4. Start the backend server:
+   ```bash
+   cd backend
+   node index.js
+   ```
+
+5. Start the frontend development server:
+   ```bash
+   cd ..
+   npm start
+   ```
+
+   Access the app at [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Scripts
+
+### Frontend:
+- `npm start`: Runs the frontend app in development mode.
+- `npm test`: Launches the test runner.
+- `npm run build`: Builds the frontend for production.
+
+### Backend:
+- `node index.js`: Starts the backend server.
+
+---
+
+## License
+
+This project is currently not licensed. Add a license if needed.
+
+---
+
+## Contact
+
+For questions or feedback, feel free to reach out:
+
+- GitHub: [froster02](https://github.com/froster02)
+
+---
+
+Made with ❤️ by froster02.
