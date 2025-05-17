@@ -32,7 +32,17 @@ const NoteState = (props) => {
 
     // add a note
     const addNote = (title, description, tag) => {
-        const note = null;
+        const note = {
+            "_id": "67e979275139f37fde095809",
+            "user": "67cddc2866828567a72743f9",
+            "title": "My Title",
+            "description": "This note is added from NoteState component",
+            "tag": "personal",
+            "date": "2025-03-30T17:02:31.861Z",
+            "createdAt": "2025-03-30T17:02:31.862Z",
+            "updatedAt": "2025-03-30T17:02:31.862Z",
+            "__v": 0
+        };
         setNotes(notes.push(note));
     }
 

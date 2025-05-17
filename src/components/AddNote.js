@@ -1,20 +1,35 @@
-import React from 'react'
-import Notes from './Notes'
+import React, { useContext, useState } from 'react'
+import noteContext from '../context/notes/notesContext';
+
 
 const AddNote = () => {
+    const context = useContext(noteContext);
+    const { addNote } = context;
+
+    const [note, setNote] = useState({ title: "", description: "", tag: "default" });
+
+    const handleClick = (e) => {
+        addNote(note);
+    }
+
+    const onChange = (e) => {
+        setNote({ ...note, [e.target.name]: e.target.value })
+    }
+
     return (
         <div className='container my-3'>
             <h1>Add a Note</h1>
-
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
-            </div>
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-            <Notes />
+            <form>
+                <div className="mb-3">
+                    <label htmlFor="title" className="form-label">Title</label>
+                    <input type="text" className="form-control" id="title" name="title" value={note.title} onChange={onChange} />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="description" className="form-label">Description</label>
+                    <input type="text" className="form-control" id="description" name="description" value={note.description} onChange={onChange} />
+                </div>
+                <button type="submit" className="btn btn-primary" onClick={handleClick}>Add Note</button>
+            </form>
         </div>
     )
 }
