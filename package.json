@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "concurrently": "^9.1.2",
     "cra-template": "1.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -12,11 +11,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "server": "nodemon backend/index.js",
+    "both": "concurrently \"npm run start\" \"nodemon backend/index.js\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "server": "nodemon backend/index.js",
-    "both": "concurrently \"npm run start\" \"npm run server\""
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^2.0.22"
   },
   "eslintConfig": {
     "extends": [
