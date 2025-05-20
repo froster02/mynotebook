@@ -2,7 +2,7 @@ import NoteContext from "./notesContext";
 import { useState } from 'react';
 
 const NoteState = (props) => {
-
+    const host = "http://localhost:3000"
     const notesInitial =
         [
             {
@@ -32,8 +32,16 @@ const NoteState = (props) => {
     const [notes, setNotes] = useState(notesInitial);
 
     // add a note
-    const addNote = (title, description, tag) => {
-        console.log("Adding a new note");
+    const addNote = async (title, description, tag) => {
+        const response = await fetch(`${host}/api/notes/addnote`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdjZGRjMjg2NjgyODU2N2E3Mjc0M2Y4In0sImlhdCI6MTc0MTU0NDQ4OH0.iah-A6NEy1qF--CJANRowrvjuymFFAOwLqSepS5Zf6Q"
+            },
+            body: JSON.stringify({ title, description, tag })
+        });
+
         const note = {
             "_id": "67e979275139f37fde095806",
             "user": "67cddc2866828567a72743f9",
@@ -56,7 +64,21 @@ const NoteState = (props) => {
     }
 
     // edit a note
-    const editNote = (id, title, description, tag) => {
+    const editNote = async (id, title, description, tag) => {
+        const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdjZGRjMjg2NjgyODU2N2E3Mjc0M2Y4In0sImlhdCI6MTc0MTU0NDQ4OH0.iah-A6NEy1qF--CJANRowrvjuymFFAOwLqSepS5Zf6Q"
+            },
+            body: JSON.stringify(title, description, tag)
+        });
+
+        const json = await response.json();
+
         for (let index = 0; index < notes.length; index++) {
             const element = notes[index];
             if (element._id === id) {

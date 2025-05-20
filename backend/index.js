@@ -22,6 +22,9 @@ connectToMongo();
  * Express application instance
  * @constant {express.Application}
  */
+
+var cors = require('cors');
+
 const app = express();
 const port = process.env.PORT || 5010;
 
