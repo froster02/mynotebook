@@ -86,14 +86,30 @@ const NoteState = (props) => {
     // delete a note
     const deleteNote = async (id) => {
         try {
-            await fetchWithCORS(`${host}/api/notes/deletenote/${id}`, {
-                method: 'DELETE'
+            console.log('Deleting note with ID:', id);
+            const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdjZGRjMjg2NjgyODU2N2E3Mjc0M2Y4In0sImlhdCI6MTc0MTU0NDQ4OH0.iah-A6NEy1qF--CJANRowrvjuymFFAOwLqSepS5Zf6Q"
+                },
+                mode: 'cors'
             });
+
+            if (!response.ok) {
+                throw new Error(`Delete failed with status: ${response.status}`);
+            }
+
+            // Update state first, then wait for response
             const newNotes = notes.filter((note) => note._id !== id);
             setNotes(newNotes);
+
+            const json = await response.json();
+            console.log('Delete response:', json);
         } catch (error) {
             console.error("Error deleting note:", error);
-            throw error;
+            // Optionally revert the state change if needed
+            await getNotes(); // Refresh notes from server
         }
     }
 
