@@ -100,7 +100,6 @@ const NoteState = (props) => {
                 throw new Error(`Delete failed with status: ${response.status}`);
             }
 
-            // Update state first, then wait for response
             const newNotes = notes.filter((note) => note._id !== id);
             setNotes(newNotes);
 
@@ -108,8 +107,7 @@ const NoteState = (props) => {
             console.log('Delete response:', json);
         } catch (error) {
             console.error("Error deleting note:", error);
-            // Optionally revert the state change if needed
-            await getNotes(); // Refresh notes from server
+            await getNotes();
         }
     }
 
