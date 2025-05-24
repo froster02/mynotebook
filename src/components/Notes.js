@@ -84,7 +84,9 @@ const Notes = () => {
 
             <div className='row my-3'>
                 <h1>Your Notes</h1>
-                {notes.length === 0 && 'No notes to display'}
+                <div className="container">
+                    {notes.length === 0 && 'No notes to display'}
+                </div>
                 {
                     notes.map((note) => {
                         return note && <Noteitem key={note._id} updateNote={updateNote} note={note} />
