@@ -1,11 +1,11 @@
-import Notes from './Notes'
+import Notes from './Notes';
 
-const Home = () => {
+const Home = ({ setAlert }) => {
     return (
         <>
-            <Notes />
+            <Notes showAlert={setAlert} />
         </>
-    )
+    );
 }
 
-export default Home
+export default Home;

@@ -1,9 +1,3 @@
-/**
- * @module routes/auth
- * @requires express
- * @requires express-validator
- * @requires ../models/User
- */
 const express = require('express');
 const { body, check, validationResult } = require('express-validator');
 const router = express.Router();
@@ -12,12 +6,6 @@ const bcrypt = require('bcryptjs');
 const JWT_SECRET = 'mynotebook';
 var jwt = require('jsonwebtoken');
 var fetchuser = require('../middleware/fetchuser');
-
-/**
- * @route POST /api/auth
- * @description Register a new user
- * @access Public
- */
 
 // Route 1: Register a user using : POST /api/auth. No Login page is required.
 router.post('/', [
@@ -38,7 +26,6 @@ router.post('/', [
         .withMessage('Password must contain at least one number')
 ], async (req, res) => {
     try {
-        // Detailed validation error checking
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             console.log('Validation Errors:', JSON.stringify(errors.array(), null, 2));
@@ -60,24 +47,7 @@ router.post('/', [
 
         const salt = await bcrypt.genSalt(10);
         const secPass = await bcrypt.hash(req.body.password, salt);
-        /**
-         * Creates a new user in the database
-         * @async
-         * @param {Object} req.body - The request body containing user information
-         * @param {string} req.body.name - The name of the user
-         * @param {string} req.body.email - The email of the user
-         * @param {string} secPass - The hashed password of the user
-         * @returns {Promise<Object>} The created user object
-         * @throws {Error} If user creation fails
-         */
-        /**
-         * Creates a new user in the database with the provided name, email, and hashed password
-         * @param {Object} user - The user object to be created
-         * @param {string} user.name - The name of the user
-         * @param {string} user.email - The email address of the user
-         * @param {string} secPass - The hashed password for the user
-         * @returns {Promise<Object>} The created user object from the database
-         */
+
         const user = await User.create({
             name: req.body.name,
             email: req.body.email,
@@ -129,27 +99,37 @@ router.post('/', [
 });
 
 //Route 2: Authenticate a user using : POST /api/auth/login. No Login page is required.
-router.post('/createuser', [
+router.post('/login', [
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password cannot be blank').exists()
 ], async (req, res) => {
-    // If there are errors, return Bad request and the errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { email, password } = req.body;
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                error: "Invalid input",
+                errors: errors.array()
+            });
+        }
+
+        const { email, password } = req.body;
+
         // Check if user exists
         let user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: "Try login using correct credentials" });
+            return res.status(400).json({
+                success: false,
+                error: "Invalid credentials"
+            });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ message: "Try login using correct credentials" });
+            return res.status(400).json({
+                success: false,
+                error: "Invalid credentials"
+            });
         }
 
         const payload = {
@@ -158,10 +138,21 @@ router.post('/createuser', [
             }
         };
         const authtoken = jwt.sign(payload, JWT_SECRET);
-        res.json({ authtoken });
+
+        res.json({
+            success: true,
+            authtoken,
+            user: {
+                id: user.id,
+                email: user.email
+            }
+        });
     } catch (error) {
-        console.error(error.message);
-        res.status(500).send("Internal Server Error");
+        console.error('Login error:', error);
+        res.status(500).json({
+            success: false,
+            error: "Internal Server Error"
+        });
     }
 });
 

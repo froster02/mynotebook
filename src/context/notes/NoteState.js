@@ -15,7 +15,7 @@ const NoteState = (props) => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdjZGRjMjg2NjgyODU2N2E3Mjc0M2Y4In0sImlhdCI6MTc0MTU0NDQ4OH0.iah-A6NEy1qF--CJANRowrvjuymFFAOwLqSepS5Zf6Q"
+                    'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjgzYWNiYzQxNTdjYzljODk3Zjg4ZGZkIn0sImlhdCI6MTc0ODY4MzcxNn0.yFUaExqF-_hJ3zrOTmN_XlErPzVQXPkqDhatgfNPyz4"
                 },
                 mode: 'cors'
             });
@@ -58,7 +58,7 @@ const NoteState = (props) => {
 
     const fetchWithCORS = async (url, options) => {
         try {
-            console.log('Fetching from:', url); // Debug log
+            console.log('Fetching from:', url);
             const response = await fetch(url, {
                 ...options,
                 headers: {
@@ -67,7 +67,7 @@ const NoteState = (props) => {
                     'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdjZGRjMjg2NjgyODU2N2E3Mjc0M2Y4In0sImlhdCI6MTc0MTU0NDQ4OH0.iah-A6NEy1qF--CJANRowrvjuymFFAOwLqSepS5Zf6Q"
                 },
                 mode: 'cors',
-                credentials: 'include' // Add this for cookies if needed
+                credentials: 'include'
             });
 
             if (!response.ok) {
@@ -75,7 +75,7 @@ const NoteState = (props) => {
             }
 
             const data = await response.json();
-            console.log('Response data:', data); // Debug log
+            console.log('Response data:', data);
             return data;
         } catch (error) {
             console.error('Fetch error:', error);

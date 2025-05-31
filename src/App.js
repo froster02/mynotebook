@@ -30,10 +30,10 @@ function App() {
           <Alert alert={alert} />
           <div className="container mt-4">
             <Routes>
-              <Route exact path="/" element={<Home />} />
+              <Route exact path="/" element={<Home setAlert={showAlert} />} />
               <Route exact path="/about" element={<About />} />
-              <Route exact path="/login" element={<Login />} />
-              <Route exact path="/signup" element={<Signup />} />
+              <Route exact path="/login" element={<Login setAlert={showAlert} />} />
+              <Route exact path="/signup" element={<Signup setAlert={showAlert} />} />
             </Routes>
           </div>
         </div>
