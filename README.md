@@ -1,6 +1,6 @@
-# MyNotebook
+# webDiary
 
-MyNotebook is a full-stack web application designed to help users efficiently create, organize, and manage their personal notes. The application includes features like note creation, editing, and deletion, and leverages modern web technologies for both the frontend and backend.
+webDiary is a full-stack web application designed to help users efficiently create, organize, and manage their personal notes. The application includes features like note creation, editing, and deletion, along with user authentication for secure access to personal notes.
 
 ---
 
@@ -11,7 +11,6 @@ MyNotebook is a full-stack web application designed to help users efficiently cr
 - 📋 **View Notes**: Notes are displayed in a responsive grid layout.
 - ✏️ **Edit Notes**: Functionality to modify the content of an existing note.
 - ❌ **Delete Notes**: Users can remove notes they no longer need.
-- 🔍 **Search Bar**: A search bar is included in the navigation bar.
 - 🧭 **Navigation**: Provides seamless navigation between "Home" and "About" pages.
 - ⚠️ **Alert System**: Displays alert messages for user feedback.
 - 🌐 **Responsive UI**: The app is styled with Bootstrap for a modern and responsive design.
@@ -84,7 +83,7 @@ The backend is implemented using **Node.js** and **Express.js**, with **MongoDB*
 1. **Database Connection**:
    - MongoDB is connected using Mongoose.
    - Connection parameters are configured in the `db.js` file.
-   - The database URL is set as `mongodb://localhost:27017/mynotebook`.
+   - The database URL is set as `mongodb://localhost:27017/webdiary`.
 
 2. **Authentication**:
    - JWT is used for secure user authentication.
@@ -111,8 +110,8 @@ The backend is implemented using **Node.js** and **Express.js**, with **MongoDB*
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/froster02/mynotebook.git
-   cd mynotebook
+   git clone https://github.com/froster02/webDiary.git
+   cd webDiary
    ```
 
 2. Install dependencies:
@@ -124,7 +123,7 @@ The backend is implemented using **Node.js** and **Express.js**, with **MongoDB*
    - Navigate to the `backend` folder.
    - Create a `.env` file and add your MongoDB URI and JWT secret:
      ```
-     MONGO_URI=mongodb://localhost:27017/mynotebook
+     MONGO_URI=mongodb://localhost:27017/webdiary
      JWT_SECRET=your_jwt_secret
      ```
 
