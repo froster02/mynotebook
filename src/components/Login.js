@@ -23,7 +23,9 @@ const Login = ({ setAlert }) => {
             console.log("Login response:", json);
 
             if (json.success) {
+                // Save token and email
                 localStorage.setItem('token', json.authtoken);
+                localStorage.setItem('userEmail', credentials.email); // Add this line
                 navigate('/');
                 setAlert("Login success", "success");
             } else {

@@ -7,21 +7,33 @@ const NoteState = (props) => {
     const notesInitial = []
     const [notes, setNotes] = useState(notesInitial);
 
+    // Helper function to validate token
+    const validateToken = () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+        return token;
+    };
+
     // get all notes
     const getNotes = async () => {
         try {
-            console.log('Fetching notes from:', `${host}/api/notes/fetchallnotes`);
+            const token = validateToken();
+            console.log('Fetching notes with token:', token);
+
             const response = await fetch(`${host}/api/notes/fetchallnotes`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjgzYWNiYzQxNTdjYzljODk3Zjg4ZGZkIn0sImlhdCI6MTc0ODY4MzcxNn0.yFUaExqF-_hJ3zrOTmN_XlErPzVQXPkqDhatgfNPyz4"
+                    'auth-token': token
                 },
                 mode: 'cors'
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
             }
 
             const json = await response.json();
@@ -38,98 +50,94 @@ const NoteState = (props) => {
         } catch (error) {
             console.error("Error fetching notes:", error);
             setNotes([]);
+            // Clear token if it's invalid
+            if (error.message.includes('401')) {
+                localStorage.removeItem('token');
+            }
         }
     }
 
     // add a note
     const addNote = async (title, description, tag) => {
-        const response = await fetch(`${host}/api/notes/addnote`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdjZGRjMjg2NjgyODU2N2E3Mjc0M2Y4In0sImlhdCI6MTc0MTU0NDQ4OH0.iah-A6NEy1qF--CJANRowrvjuymFFAOwLqSepS5Zf6Q"
-            },
-            body: JSON.stringify({ title, description, tag })
-        });
-
-        const note = await response.json();
-        setNotes(notes.concat(note));
-    }
-
-    const fetchWithCORS = async (url, options) => {
         try {
-            console.log('Fetching from:', url);
-            const response = await fetch(url, {
-                ...options,
+            const token = validateToken();
+            const response = await fetch(`${host}/api/notes/addnote`, {
+                method: 'POST',
                 headers: {
-                    ...options.headers,
                     'Content-Type': 'application/json',
-                    'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdjZGRjMjg2NjgyODU2N2E3Mjc0M2Y4In0sImlhdCI6MTc0MTU0NDQ4OH0.iah-A6NEy1qF--CJANRowrvjuymFFAOwLqSepS5Zf6Q"
+                    'auth-token': token
                 },
-                mode: 'cors',
-                credentials: 'include'
+                body: JSON.stringify({ title, description, tag })
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Add note failed with status: ${response.status}`);
             }
 
-            const data = await response.json();
-            console.log('Response data:', data);
-            return data;
+            const note = await response.json();
+            setNotes(notes.concat(note));
         } catch (error) {
-            console.error('Fetch error:', error);
+            console.error("Error adding note:", error);
             throw error;
         }
-    };
+    }
 
     // delete a note
     const deleteNote = async (id) => {
         try {
-            console.log('Deleting note with ID:', id);
+            const token = validateToken();
             const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdjZGRjMjg2NjgyODU2N2E3Mjc0M2Y4In0sImlhdCI6MTc0MTU0NDQ4OH0.iah-A6NEy1qF--CJANRowrvjuymFFAOwLqSepS5Zf6Q"
+                    'auth-token': token
                 },
                 mode: 'cors'
             });
 
             if (!response.ok) {
-                throw new Error(`Delete failed with status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Delete failed with status: ${response.status}`);
             }
-
-            const newNotes = notes.filter((note) => note._id !== id);
-            setNotes(newNotes);
 
             const json = await response.json();
             console.log('Delete response:', json);
+
+            const newNotes = notes.filter((note) => note._id !== id);
+            setNotes(newNotes);
         } catch (error) {
             console.error("Error deleting note:", error);
-            await getNotes();
+            throw error;
         }
     }
 
     // edit a note
     const editNote = async (id, title, description, tag) => {
         try {
+            const token = validateToken();
             const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdjZGRjMjg2NjgyODU2N2E3Mjc0M2Y4In0sImlhdCI6MTc0MTU0NDQ4OH0.iah-A6NEy1qF--CJANRowrvjuymFFAOwLqSepS5Zf6Q"
+                    'auth-token': token
                 },
                 body: JSON.stringify({ title, description, tag })
             });
-            await response.json();
 
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Update failed with status: ${response.status}`);
+            }
+
+            await response.json();
             const newNotes = notes.map(note =>
                 note._id === id ? { ...note, title, description, tag } : note
             );
             setNotes(newNotes);
         } catch (error) {
             console.error("Error updating note:", error);
+            throw error;
         }
     }
 
